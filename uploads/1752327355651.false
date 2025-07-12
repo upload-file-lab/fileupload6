@@ -1,0 +1,964 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="45">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>12</ID>
+      <Description>"Main"</Description>
+      <Options moHideChildren="1"/>
+      <Color>FF8000</Color>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>60</ID>
+          <Description>"Coins"</Description>
+          <Color>00FF00</Color>
+          <VariableType>4 Bytes</VariableType>
+          <Address>HillClimbRacing.exe+28CAD4</Address>
+          <Hotkeys>
+            <Hotkey>
+              <Action>Toggle Activation</Action>
+              <Keys>
+                <Key>70</Key>
+              </Keys>
+              <ID>0</ID>
+              <ActivateSound>Activate</ActivateSound>
+              <DeactivateSound>Deactivate</DeactivateSound>
+            </Hotkey>
+            <Hotkey>
+              <Action>Toggle Activation</Action>
+              <Keys/>
+              <Description>E</Description>
+              <ID>1</ID>
+            </Hotkey>
+          </Hotkeys>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>6</ID>
+          <Description>"Gems"</Description>
+          <Color>00FF00</Color>
+          <VariableType>4 Bytes</VariableType>
+          <Address>HillClimbRacing.exe+28CAEC</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1</ID>
+          <Description>"Gas"</Description>
+          <Color>00FF00</Color>
+          <VariableType>Float</VariableType>
+          <Address>"HillClimbRacing.exe"+0028CA2C</Address>
+          <Offsets>
+            <Offset>2A8</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>112</ID>
+          <Description>"Car ID"</Description>
+          <Color>00FF00</Color>
+          <VariableType>4 Bytes</VariableType>
+          <Address>HillClimbRacing.exe+28CA98</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>113</ID>
+          <Description>"Map ID"</Description>
+          <Color>00FF00</Color>
+          <VariableType>4 Bytes</VariableType>
+          <Address>HillClimbRacing.exe+28CAB4</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>13</ID>
+      <Description>"Scripts"</Description>
+      <Options moHideChildren="1"/>
+      <Color>FF8000</Color>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>119</ID>
+          <Description>"Unlimited Gas"</Description>
+          <Color>00FF00</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : HillClimbRacing.exe
+  Version: 
+  Date   : 2024-11-18
+  Author : luket
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+aobscanmodule(INJECT,HillClimbRacing.exe,F3 0F 11 83 A8 02 00 00 80) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+
+code:
+  nop
+  jmp return
+
+INJECT:
+  jmp newmem
+  nop 3
+return:
+registersymbol(INJECT)
+
+[DISABLE]
+
+INJECT:
+  db F3 0F 11 83 A8 02 00 00
+
+unregistersymbol(INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: HillClimbRacing.exe+4B0CA
+
+HillClimbRacing.exe+4B093: FF D0                          - call eax
+HillClimbRacing.exe+4B095: F2 0F 10 45 08                 - movsd xmm0,[ebp+08]
+HillClimbRacing.exe+4B09A: F2 0F 59 05 70 29 62 00        - mulsd xmm0,[HillClimbRacing.exe+222970]
+HillClimbRacing.exe+4B0A2: 8B 8B 84 01 00 00              - mov ecx,[ebx+00000184]
+HillClimbRacing.exe+4B0A8: DD 9D 54 FF FF FF              - fstp qword ptr [ebp-000000AC]
+HillClimbRacing.exe+4B0AE: F2 0F 10 8D 54 FF FF FF        - movsd xmm1,[ebp-000000AC]
+HillClimbRacing.exe+4B0B6: F2 0F 59 C8                    - mulsd xmm1,xmm0
+HillClimbRacing.exe+4B0BA: F2 0F 10 85 5C FF FF FF        - movsd xmm0,[ebp-000000A4]
+HillClimbRacing.exe+4B0C2: F2 0F 5C C1                    - subsd xmm0,xmm1
+HillClimbRacing.exe+4B0C6: 66 0F 5A C0                    - cvtpd2ps xmm0,xmm0
+// ---------- INJECTING HERE ----------
+HillClimbRacing.exe+4B0CA: F3 0F 11 83 A8 02 00 00        - movss [ebx+000002A8],xmm0
+// ---------- DONE INJECTING  ----------
+HillClimbRacing.exe+4B0D2: 80 B9 70 02 00 00 00           - cmp byte ptr [ecx+00000270],00
+HillClimbRacing.exe+4B0D9: 74 0A                          - je HillClimbRacing.exe+4B0E5
+HillClimbRacing.exe+4B0DB: C7 83 A8 02 00 00 00 00 C8 42  - mov [ebx+000002A8],42C80000
+HillClimbRacing.exe+4B0E5: F3 0F 10 93 A8 02 00 00        - movss xmm2,[ebx+000002A8]
+HillClimbRacing.exe+4B0ED: 0F 57 C9                       - xorps xmm1,xmm1
+HillClimbRacing.exe+4B0F0: 0F 2F D1                       - comiss xmm2,xmm1
+HillClimbRacing.exe+4B0F3: 72 3B                          - jb HillClimbRacing.exe+4B130
+HillClimbRacing.exe+4B0F5: F3 0F 10 05 80 2D 62 00        - movss xmm0,[HillClimbRacing.exe+222D80]
+HillClimbRacing.exe+4B0FD: 0F 2F C2                       - comiss xmm0,xmm2
+HillClimbRacing.exe+4B100: 76 2E                          - jna HillClimbRacing.exe+4B130
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>8</ID>
+          <Description>"Max Upgrade"</Description>
+          <Color>00FF00</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : HillClimbRacing.exe
+  Version: 
+  Date   : 2024-09-24
+  Author : luket
+
+  This script does upgrading
+}
+
+[ENABLE]
+
+aobscanmodule(INJECT,HillClimbRacing.exe,89 15 * * * * 8B 87 70 01 00 00 FF 00 8B 87 70 01 00 00) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+
+code:
+  add [eax] 15
+  mov eax,[edi+00000170]
+  jmp return
+
+INJECT+0C:
+  jmp newmem
+  nop 3
+return:
+registersymbol(INJECT)
+
+[DISABLE]
+
+INJECT+0C:
+  db FF 00 8B 87 70 01 00 00
+
+unregistersymbol(INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: HillClimbRacing.exe+C0E2D
+
+HillClimbRacing.exe+C0E06: 33 C9                 - xor ecx,ecx
+HillClimbRacing.exe+C0E08: EB 0F                 - jmp HillClimbRacing.exe+C0E19
+HillClimbRacing.exe+C0E0A: 8D 41 01              - lea eax,[ecx+01]
+HillClimbRacing.exe+C0E0D: 8B 8F 7C 01 00 00     - mov ecx,[edi+0000017C]
+HillClimbRacing.exe+C0E13: 0F AF C8              - imul ecx,eax
+HillClimbRacing.exe+C0E16: 0F AF C8              - imul ecx,eax
+HillClimbRacing.exe+C0E19: 2B D1                 - sub edx,ecx
+HillClimbRacing.exe+C0E1B: 89 8D 30 FF FF FF     - mov [ebp-000000D0],ecx
+HillClimbRacing.exe+C0E21: 89 15 D4 CA 23 01     - mov [HillClimbRacing.exe+28CAD4],edx
+HillClimbRacing.exe+C0E27: 8B 87 70 01 00 00     - mov eax,[edi+00000170]
+// ---------- INJECTING HERE ----------
+HillClimbRacing.exe+C0E2D: FF 00                 - inc [eax]
+// ---------- DONE INJECTING  ----------
+HillClimbRacing.exe+C0E2F: 8B 87 70 01 00 00     - mov eax,[edi+00000170]
+HillClimbRacing.exe+C0E35: 8B 8F 74 01 00 00     - mov ecx,[edi+00000174]
+HillClimbRacing.exe+C0E3B: 8B 00                 - mov eax,[eax]
+HillClimbRacing.exe+C0E3D: 39 01                 - cmp [ecx],eax
+HillClimbRacing.exe+C0E3F: 7D 02                 - jnl HillClimbRacing.exe+C0E43
+HillClimbRacing.exe+C0E41: 89 01                 - mov [ecx],eax
+HillClimbRacing.exe+C0E43: B1 01                 - mov cl,01
+HillClimbRacing.exe+C0E45: E8 26 A5 08 00        - call HillClimbRacing.exe+14B370
+HillClimbRacing.exe+C0E4A: 83 BF B8 01 00 00 10  - cmp dword ptr [edi+000001B8],10
+HillClimbRacing.exe+C0E51: 8D B7 A4 01 00 00     - lea esi,[edi+000001A4]
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>5</ID>
+          <Description>"Add lots of nitro | Buy to trigger"</Description>
+          <Color>00FF00</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : HillClimbRacing.exe
+  Version: 
+  Date   : 2024-12-16
+  Author : luket
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+aobscanmodule(INJECT,HillClimbRacing.exe,8B 93 E4 00 00 00 8B C8) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+mov [ebx+000000E4] 64 //adds 100 nitro
+code:
+  mov edx,[ebx+000000E4]
+  jmp return
+
+INJECT:
+  jmp newmem
+  nop
+return:
+registersymbol(INJECT)
+
+[DISABLE]
+
+INJECT:
+  db 8B 93 E4 00 00 00
+
+unregistersymbol(INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: HillClimbRacing.exe+CCFC3
+
+HillClimbRacing.exe+CCF9F: FF 15 C4 95 EB 00  - call dword ptr [HillClimbRacing.exe+2095C4]
+HillClimbRacing.exe+CCFA5: A1 EC CA F3 00     - mov eax,[HillClimbRacing.exe+28CAEC]
+HillClimbRacing.exe+CCFAA: 8B 35 F0 9B EB 00  - mov esi,[HillClimbRacing.exe+209BF0]
+HillClimbRacing.exe+CCFB0: 89 45 C4           - mov [ebp-3C],eax
+HillClimbRacing.exe+CCFB3: FF D6              - call esi
+HillClimbRacing.exe+CCFB5: 6A 00              - push 00
+HillClimbRacing.exe+CCFB7: 68 24 66 EC 00     - push HillClimbRacing.exe+216624
+HillClimbRacing.exe+CCFBC: 8B C8              - mov ecx,eax
+HillClimbRacing.exe+CCFBE: 8B 10              - mov edx,[eax]
+HillClimbRacing.exe+CCFC0: FF 52 08           - call dword ptr [edx+08]
+// ---------- INJECTING HERE ----------
+HillClimbRacing.exe+CCFC3: 8B 93 E4 00 00 00  - mov edx,[ebx+000000E4]
+// ---------- DONE INJECTING  ----------
+HillClimbRacing.exe+CCFC9: 8B C8              - mov ecx,eax
+HillClimbRacing.exe+CCFCB: E8 10 F1 FF FF     - call HillClimbRacing.exe+CC0E0
+HillClimbRacing.exe+CCFD0: 8B F8              - mov edi,eax
+HillClimbRacing.exe+CCFD2: 8B 45 C4           - mov eax,[ebp-3C]
+HillClimbRacing.exe+CCFD5: 3B F8              - cmp edi,eax
+HillClimbRacing.exe+CCFD7: 7E 1E              - jle HillClimbRacing.exe+CCFF7
+HillClimbRacing.exe+CCFD9: 6A 00              - push 00
+HillClimbRacing.exe+CCFDB: 50                 - push eax
+HillClimbRacing.exe+CCFDC: 57                 - push edi
+HillClimbRacing.exe+CCFDD: 8B CB              - mov ecx,ebx
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>9</ID>
+          <Description>"All stages are unlocked"</Description>
+          <Color>00FF00</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : HillClimbRacing.exe
+  Version: 
+  Date   : 2024-12-14
+  Author : luket
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+aobscanmodule(INJECT,HillClimbRacing.exe,8A 81 98 00 00 00) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+
+code:
+  mov [ecx+00000098] 1
+  jmp return
+
+INJECT:
+  jmp newmem
+  nop
+return:
+registersymbol(INJECT)
+
+[DISABLE]
+
+INJECT:
+  db 8A 81 98 00 00 00
+
+unregistersymbol(INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: HillClimbRacing.exe+167810
+
+HillClimbRacing.exe+167804: 5D                 - pop ebp
+HillClimbRacing.exe+167805: C2 04 00           - ret 0004
+HillClimbRacing.exe+167808: CC                 - int 3 
+HillClimbRacing.exe+167809: CC                 - int 3 
+HillClimbRacing.exe+16780A: CC                 - int 3 
+HillClimbRacing.exe+16780B: CC                 - int 3 
+HillClimbRacing.exe+16780C: CC                 - int 3 
+HillClimbRacing.exe+16780D: CC                 - int 3 
+HillClimbRacing.exe+16780E: CC                 - int 3 
+HillClimbRacing.exe+16780F: CC                 - int 3 
+// ---------- INJECTING HERE ----------
+HillClimbRacing.exe+167810: 8A 81 98 00 00 00  - mov al,[ecx+00000098]
+// ---------- DONE INJECTING  ----------
+HillClimbRacing.exe+167816: C3                 - ret 
+HillClimbRacing.exe+167817: CC                 - int 3 
+HillClimbRacing.exe+167818: CC                 - int 3 
+HillClimbRacing.exe+167819: CC                 - int 3 
+HillClimbRacing.exe+16781A: CC                 - int 3 
+HillClimbRacing.exe+16781B: CC                 - int 3 
+HillClimbRacing.exe+16781C: CC                 - int 3 
+HillClimbRacing.exe+16781D: CC                 - int 3 
+HillClimbRacing.exe+16781E: CC                 - int 3 
+HillClimbRacing.exe+16781F: CC                 - int 3 
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>121</ID>
+          <Description>"All vehicles are unlocked"</Description>
+          <Color>00FF00</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : HillClimbRacing.exe
+  Version: 
+  Date   : 2024-12-15
+  Author : luket
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+aobscanmodule(INJECT,HillClimbRacing.exe,80 BF C0 00 00 00 00) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+mov [edi+000000C0] 1
+code:
+  cmp byte ptr [edi+000000C0],00
+  jmp return
+
+INJECT:
+  jmp newmem
+  nop 2
+return:
+registersymbol(INJECT)
+
+[DISABLE]
+
+INJECT:
+  db 80 BF C0 00 00 00 00
+
+unregistersymbol(INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: HillClimbRacing.exe+9A27C
+
+HillClimbRacing.exe+9A262: 3B D8                 - cmp ebx,eax
+HillClimbRacing.exe+9A264: 74 0C                 - je HillClimbRacing.exe+9A272
+HillClimbRacing.exe+9A266: 6A FF                 - push -01
+HillClimbRacing.exe+9A268: 6A 00                 - push 00
+HillClimbRacing.exe+9A26A: 50                    - push eax
+HillClimbRacing.exe+9A26B: 8B CB                 - mov ecx,ebx
+HillClimbRacing.exe+9A26D: E8 5E 4A F7 FF        - call HillClimbRacing.exe+ECD0
+HillClimbRacing.exe+9A272: 8B 8E A0 01 00 00     - mov ecx,[esi+000001A0]
+HillClimbRacing.exe+9A278: 85 C9                 - test ecx,ecx
+HillClimbRacing.exe+9A27A: 74 16                 - je HillClimbRacing.exe+9A292
+// ---------- INJECTING HERE ----------
+HillClimbRacing.exe+9A27C: 80 BF C0 00 00 00 00  - cmp byte ptr [edi+000000C0],00
+// ---------- DONE INJECTING  ----------
+HillClimbRacing.exe+9A283: 8B 11                 - mov edx,[ecx]
+HillClimbRacing.exe+9A285: 0F 94 C0              - sete al
+HillClimbRacing.exe+9A288: 0F B6 C0              - movzx eax,al
+HillClimbRacing.exe+9A28B: 50                    - push eax
+HillClimbRacing.exe+9A28C: FF 92 8C 00 00 00     - call dword ptr [edx+0000008C]
+HillClimbRacing.exe+9A292: 8B 55 EC              - mov edx,[ebp-14]
+HillClimbRacing.exe+9A295: 83 FA 10              - cmp edx,10
+HillClimbRacing.exe+9A298: 72 0E                 - jb HillClimbRacing.exe+9A2A8
+HillClimbRacing.exe+9A29A: 8B 4D D8              - mov ecx,[ebp-28]
+HillClimbRacing.exe+9A29D: 42                    - inc edx
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>120</ID>
+          <Description>"Unlock all achievements"</Description>
+          <Color>00FF00</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : HillClimbRacing.exe
+  Version: 
+  Date   : 2024-12-15
+  Author : luket
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+aobscanmodule(INJECT,HillClimbRacing.exe,80 BB 9C 00 00 00 00 75 34) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+mov [ebx+0000009C] 1
+code:
+  cmp byte ptr [ebx+0000009C],00
+  jmp return
+
+INJECT:
+  jmp newmem
+  nop 2
+return:
+registersymbol(INJECT)
+
+[DISABLE]
+
+INJECT:
+  db 80 BB 9C 00 00 00 00
+
+unregistersymbol(INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: HillClimbRacing.exe+1676B
+
+HillClimbRacing.exe+16736: 0F 5B C0                    - cvtdq2ps xmm0,xmm0
+HillClimbRacing.exe+16739: F3 0F 59 05 24 30 63 00     - mulss xmm0,[HillClimbRacing.exe+223024]
+HillClimbRacing.exe+16741: F3 0F 5C 05 94 2F 63 00     - subss xmm0,[HillClimbRacing.exe+222F94]
+HillClimbRacing.exe+16749: F3 0F 11 04 24              - movss [esp],xmm0
+HillClimbRacing.exe+1674E: FF 50 48                    - call dword ptr [eax+48]
+HillClimbRacing.exe+16751: 8B 86 E4 00 00 00           - mov eax,[esi+000000E4]
+HillClimbRacing.exe+16757: 8D 8E E4 00 00 00           - lea ecx,[esi+000000E4]
+HillClimbRacing.exe+1675D: 68 E6 00 00 00              - push 000000E6
+HillClimbRacing.exe+16762: FF 50 14                    - call dword ptr [eax+14]
+HillClimbRacing.exe+16765: 8B 9D 68 FF FF FF           - mov ebx,[ebp-00000098]
+// ---------- INJECTING HERE ----------
+HillClimbRacing.exe+1676B: 80 BB 9C 00 00 00 00        - cmp byte ptr [ebx+0000009C],00
+// ---------- DONE INJECTING  ----------
+HillClimbRacing.exe+16772: 75 34                       - jne HillClimbRacing.exe+167A8
+HillClimbRacing.exe+16774: 66 C7 85 40 FF FF FF 8C 8C  - mov word ptr [ebp-000000C0],8C8C
+HillClimbRacing.exe+1677D: B1 8C                       - mov cl,-74
+HillClimbRacing.exe+1677F: 66 8B 85 40 FF FF FF        - mov ax,[ebp-000000C0]
+HillClimbRacing.exe+16786: 88 8D 3F FF FF FF           - mov [ebp-000000C1],cl
+HillClimbRacing.exe+1678C: 8D 8D 3D FF FF FF           - lea ecx,[ebp-000000C3]
+HillClimbRacing.exe+16792: 66 89 85 3D FF FF FF        - mov [ebp-000000C3],ax
+HillClimbRacing.exe+16799: 8B 86 E4 00 00 00           - mov eax,[esi+000000E4]
+HillClimbRacing.exe+1679F: 51                          - push ecx
+HillClimbRacing.exe+167A0: 8D 8E E4 00 00 00           - lea ecx,[esi+000000E4]
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>2</ID>
+          <Description>"All tuning parts fully upgraded (every car)"</Description>
+          <Color>00FF00</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : HillClimbRacing.exe
+  Version: 
+  Date   : 2024-12-16
+  Author : luket
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+aobscanmodule(INJECT,HillClimbRacing.exe,FF B6 84 00 00 00 8B 02) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+mov [esi+00000084] 19 //25 is maximum upgrade amount for all vehicles
+code:
+  push [esi+00000084]
+  jmp return
+
+INJECT:
+  jmp newmem
+  nop
+return:
+registersymbol(INJECT)
+
+[DISABLE]
+
+INJECT:
+  db FF B6 84 00 00 00
+
+unregistersymbol(INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: HillClimbRacing.exe+10E4AD
+
+HillClimbRacing.exe+10E495: 51                 - push ecx
+HillClimbRacing.exe+10E496: 8B CA              - mov ecx,edx
+HillClimbRacing.exe+10E498: FF 50 1C           - call dword ptr [eax+1C]
+HillClimbRacing.exe+10E49B: FF D7              - call edi
+HillClimbRacing.exe+10E49D: 83 7E 2C 10        - cmp dword ptr [esi+2C],10
+HillClimbRacing.exe+10E4A1: 8B D0              - mov edx,eax
+HillClimbRacing.exe+10E4A3: 72 05              - jb HillClimbRacing.exe+10E4AA
+HillClimbRacing.exe+10E4A5: 8B 4E 18           - mov ecx,[esi+18]
+HillClimbRacing.exe+10E4A8: EB 03              - jmp HillClimbRacing.exe+10E4AD
+HillClimbRacing.exe+10E4AA: 8D 4E 18           - lea ecx,[esi+18]
+// ---------- INJECTING HERE ----------
+HillClimbRacing.exe+10E4AD: FF B6 84 00 00 00  - push [esi+00000084]
+// ---------- DONE INJECTING  ----------
+HillClimbRacing.exe+10E4B3: 8B 02              - mov eax,[edx]
+HillClimbRacing.exe+10E4B5: 51                 - push ecx
+HillClimbRacing.exe+10E4B6: 8B CA              - mov ecx,edx
+HillClimbRacing.exe+10E4B8: FF 50 1C           - call dword ptr [eax+1C]
+HillClimbRacing.exe+10E4BB: 81 C6 88 00 00 00  - add esi,00000088
+HillClimbRacing.exe+10E4C1: 3B 73 0C           - cmp esi,[ebx+0C]
+HillClimbRacing.exe+10E4C4: 75 BA              - jne HillClimbRacing.exe+10E480
+HillClimbRacing.exe+10E4C6: 68 F8 DF EB 00     - push HillClimbRacing.exe+20DFF8
+HillClimbRacing.exe+10E4CB: 8D 53 14           - lea edx,[ebx+14]
+HillClimbRacing.exe+10E4CE: 8D 4D C0           - lea ecx,[ebp-40]
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>118</ID>
+          <Description>"Teleport to end of map (can be laggy)"</Description>
+          <Color>00FF00</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : HillClimbRacing.exe
+  Version: 
+  Date   : 2024-11-18
+  Author : 7-D
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+aobscanmodule(INJECT,HillClimbRacing.exe,8B 41 2C F3 0F 10 41 44) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+  mov [ecx+2C]+[ecx+44], (float)99999   //this may lag ur game
+code:
+  mov eax,[ecx+2C]
+  movss xmm0,[ecx+44]
+  jmp return
+
+INJECT:
+  jmp newmem
+  nop 3
+return:
+registersymbol(INJECT)
+
+[DISABLE]
+
+INJECT:
+  db 8B 41 2C F3 0F 10 41 44
+
+unregistersymbol(INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: HillClimbRacing.exe+1DEE4F
+
+HillClimbRacing.exe+1DEE28: E8 A3 5A 00 00           - call HillClimbRacing.exe+1E48D0
+HillClimbRacing.exe+1DEE2D: F3 0F 10 2E              - movss xmm5,[esi]
+HillClimbRacing.exe+1DEE31: 33 F6                    - xor esi,esi
+HillClimbRacing.exe+1DEE33: F3 0F 11 AD 30 FF FF FF  - movss [ebp-000000D0],xmm5
+HillClimbRacing.exe+1DEE3B: 39 77 1C                 - cmp [edi+1C],esi
+HillClimbRacing.exe+1DEE3E: 0F 8E 7C 01 00 00        - jng HillClimbRacing.exe+1DEFC0
+HillClimbRacing.exe+1DEE44: 33 D2                    - xor edx,edx
+HillClimbRacing.exe+1DEE46: 8B 47 08                 - mov eax,[edi+08]
+HillClimbRacing.exe+1DEE49: 8B 0C B0                 - mov ecx,[eax+esi*4]
+HillClimbRacing.exe+1DEE4C: 83 39 02                 - cmp dword ptr [ecx],02
+// ---------- INJECTING HERE ----------
+HillClimbRacing.exe+1DEE4F: 8B 41 2C                 - mov eax,[ecx+2C]
+// ---------- DONE INJECTING  ----------
+HillClimbRacing.exe+1DEE52: F3 0F 10 41 44           - movss xmm0,[ecx+44]
+HillClimbRacing.exe+1DEE57: F3 0F 10 71 38           - movss xmm6,[ecx+38]
+HillClimbRacing.exe+1DEE5C: F3 0F 10 79 40           - movss xmm7,[ecx+40]
+HillClimbRacing.exe+1DEE61: 89 85 28 FF FF FF        - mov [ebp-000000D8],eax
+HillClimbRacing.exe+1DEE67: 8B 41 30                 - mov eax,[ecx+30]
+HillClimbRacing.exe+1DEE6A: 89 85 24 FF FF FF        - mov [ebp-000000DC],eax
+HillClimbRacing.exe+1DEE70: 8B 41 2C                 - mov eax,[ecx+2C]
+HillClimbRacing.exe+1DEE73: F3 0F 11 85 58 FF FF FF  - movss [ebp-000000A8],xmm0
+HillClimbRacing.exe+1DEE7B: F3 0F 11 85 44 FF FF FF  - movss [ebp-000000BC],xmm0
+HillClimbRacing.exe+1DEE83: F3 0F 10 41 48           - movss xmm0,[ecx+48]
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>10</ID>
+          <Description>"Max out highscore for every stage"</Description>
+          <Color>00FF00</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : HillClimbRacing.exe
+  Version: 
+  Date   : 2024-12-15
+  Author : luket
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+aobscanmodule(INJECT,HillClimbRacing.exe,8B 41 64 C3 CC) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+mov [ecx+64] F423F
+code:
+  mov eax,[ecx+64]
+  ret 
+  int 3 
+  jmp return
+
+INJECT:
+  jmp newmem
+return:
+registersymbol(INJECT)
+
+[DISABLE]
+
+INJECT:
+  db 8B 41 64 C3 CC
+
+unregistersymbol(INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: HillClimbRacing.exe+167760
+
+HillClimbRacing.exe+16774F: CC        - int 3 
+HillClimbRacing.exe+167750: 55        - push ebp
+HillClimbRacing.exe+167751: 8B EC     - mov ebp,esp
+HillClimbRacing.exe+167753: 8B 45 08  - mov eax,[ebp+08]
+HillClimbRacing.exe+167756: 89 41 68  - mov [ecx+68],eax
+HillClimbRacing.exe+167759: 5D        - pop ebp
+HillClimbRacing.exe+16775A: C2 04 00  - ret 0004
+HillClimbRacing.exe+16775D: CC        - int 3 
+HillClimbRacing.exe+16775E: CC        - int 3 
+HillClimbRacing.exe+16775F: CC        - int 3 
+// ---------- INJECTING HERE ----------
+HillClimbRacing.exe+167760: 8B 41 64  - mov eax,[ecx+64]
+// ---------- DONE INJECTING  ----------
+HillClimbRacing.exe+167763: C3        - ret 
+HillClimbRacing.exe+167764: CC        - int 3 
+HillClimbRacing.exe+167765: CC        - int 3 
+HillClimbRacing.exe+167766: CC        - int 3 
+HillClimbRacing.exe+167767: CC        - int 3 
+HillClimbRacing.exe+167768: CC        - int 3 
+HillClimbRacing.exe+167769: CC        - int 3 
+HillClimbRacing.exe+16776A: CC        - int 3 
+HillClimbRacing.exe+16776B: CC        - int 3 
+HillClimbRacing.exe+16776C: CC        - int 3 
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>122</ID>
+          <Description>"Max out all highscores"</Description>
+          <Color>00FF00</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : HillClimbRacing.exe
+  Version: 
+  Date   : 2024-12-16
+  Author : luket
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+aobscanmodule(INJECT,HillClimbRacing.exe,8B 04 81 5D C2 04 00) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+mov [ecx+eax*4] -9999
+code:
+  mov eax,[ecx+eax*4]
+  pop ebp
+  ret 0004
+  jmp return
+
+INJECT:
+  jmp newmem
+  nop 2
+return:
+registersymbol(INJECT)
+
+[DISABLE]
+
+INJECT:
+  db 8B 04 81 5D C2 04 00
+
+unregistersymbol(INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: HillClimbRacing.exe+1675FC
+
+HillClimbRacing.exe+1675EA: CC                 - int 3 
+HillClimbRacing.exe+1675EB: CC                 - int 3 
+HillClimbRacing.exe+1675EC: CC                 - int 3 
+HillClimbRacing.exe+1675ED: CC                 - int 3 
+HillClimbRacing.exe+1675EE: CC                 - int 3 
+HillClimbRacing.exe+1675EF: CC                 - int 3 
+HillClimbRacing.exe+1675F0: 55                 - push ebp
+HillClimbRacing.exe+1675F1: 8B EC              - mov ebp,esp
+HillClimbRacing.exe+1675F3: 8B 89 9C 00 00 00  - mov ecx,[ecx+0000009C]
+HillClimbRacing.exe+1675F9: 8B 45 08           - mov eax,[ebp+08]
+// ---------- INJECTING HERE ----------
+HillClimbRacing.exe+1675FC: 8B 04 81           - mov eax,[ecx+eax*4]
+// ---------- DONE INJECTING  ----------
+HillClimbRacing.exe+1675FF: 5D                 - pop ebp
+HillClimbRacing.exe+167600: C2 04 00           - ret 0004
+HillClimbRacing.exe+167603: CC                 - int 3 
+HillClimbRacing.exe+167604: CC                 - int 3 
+HillClimbRacing.exe+167605: CC                 - int 3 
+HillClimbRacing.exe+167606: CC                 - int 3 
+HillClimbRacing.exe+167607: CC                 - int 3 
+HillClimbRacing.exe+167608: CC                 - int 3 
+HillClimbRacing.exe+167609: CC                 - int 3 
+HillClimbRacing.exe+16760A: CC                 - int 3 
+}
+</AssemblerScript>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>14</ID>
+      <Description>"Extra"</Description>
+      <Options moHideChildren="1"/>
+      <Color>FF8000</Color>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>111</ID>
+          <Description>"Highscore Editor"</Description>
+          <Options moHideChildren="1"/>
+          <Color>00FF00</Color>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>110</ID>
+              <Description>"Hill Climber "</Description>
+              <Color>00FFFF</Color>
+              <VariableType>4 Bytes</VariableType>
+              <Address>"HillClimbRacing.exe"+0028E33C</Address>
+              <Offsets>
+                <Offset>4</Offset>
+                <Offset>9C</Offset>
+                <Offset>4</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>94</ID>
+              <Description>"Moto Bike"</Description>
+              <Color>00FFFF</Color>
+              <VariableType>4 Bytes</VariableType>
+              <Address>"HillClimbRacing.exe"+0028E33C</Address>
+              <Offsets>
+                <Offset>8</Offset>
+                <Offset>9C</Offset>
+                <Offset>4</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>7</ID>
+      <Description>"Made by LukeDaNuke - v4"</Description>
+      <Color>00FFFF</Color>
+      <GroupHeader>1</GroupHeader>
+    </CheatEntry>
+  </CheatEntries>
+  <CheatCodes>
+    <CodeEntry>
+      <Description>Change of call HillClimbRacing.exe+1EEF4A</Description>
+      <AddressString>HillClimbRacing.exe+1EE889</AddressString>
+      <Before>
+        <Byte>BE</Byte>
+        <Byte>04</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+        <Byte>C3</Byte>
+      </Before>
+      <Actual>
+        <Byte>E8</Byte>
+        <Byte>BC</Byte>
+        <Byte>06</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </Actual>
+      <After>
+        <Byte>E9</Byte>
+        <Byte>8E</Byte>
+        <Byte>FE</Byte>
+        <Byte>FF</Byte>
+        <Byte>FF</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Change of jmp HillClimbRacing.exe+1EE721</Description>
+      <AddressString>HillClimbRacing.exe+1EE88E</AddressString>
+      <Before>
+        <Byte>90</Byte>
+        <Byte>90</Byte>
+        <Byte>90</Byte>
+        <Byte>90</Byte>
+        <Byte>90</Byte>
+      </Before>
+      <Actual>
+        <Byte>E9</Byte>
+        <Byte>8E</Byte>
+        <Byte>FE</Byte>
+        <Byte>FF</Byte>
+        <Byte>FF</Byte>
+      </Actual>
+      <After>
+        <Byte>CC</Byte>
+        <Byte>CC</Byte>
+        <Byte>CC</Byte>
+        <Byte>CC</Byte>
+        <Byte>CC</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Change of call HillClimbRacing.exe+1EED46</Description>
+      <AddressString>HillClimbRacing.exe+1EE883</AddressString>
+      <Before>
+        <Byte>FF</Byte>
+        <Byte>FF</Byte>
+        <Byte>8B</Byte>
+        <Byte>45</Byte>
+        <Byte>E0</Byte>
+      </Before>
+      <Actual>
+        <Byte>E8</Byte>
+        <Byte>BE</Byte>
+        <Byte>04</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </Actual>
+      <After>
+        <Byte>C3</Byte>
+        <Byte>90</Byte>
+        <Byte>90</Byte>
+        <Byte>90</Byte>
+        <Byte>90</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Change of cmp dword ptr [esi+000000E4],01</Description>
+      <AddressString>HillClimbRacing.exe+CCF0A</AddressString>
+      <Before>
+        <Byte>8E</Byte>
+        <Byte>E4</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </Before>
+      <Actual>
+        <Byte>83</Byte>
+        <Byte>BE</Byte>
+        <Byte>E4</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+        <Byte>01</Byte>
+      </Actual>
+      <After>
+        <Byte>7D</Byte>
+        <Byte>0A</Byte>
+        <Byte>C7</Byte>
+        <Byte>86</Byte>
+        <Byte>E4</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Code :movss [ebx+000002A8],xmm0</Description>
+      <AddressString>HillClimbRacing.exe+4B0CA</AddressString>
+      <Before>
+        <Byte>C1</Byte>
+        <Byte>66</Byte>
+        <Byte>0F</Byte>
+        <Byte>5A</Byte>
+        <Byte>C0</Byte>
+      </Before>
+      <Actual>
+        <Byte>F3</Byte>
+        <Byte>0F</Byte>
+        <Byte>11</Byte>
+        <Byte>83</Byte>
+        <Byte>A8</Byte>
+        <Byte>02</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </Actual>
+      <After>
+        <Byte>80</Byte>
+        <Byte>B9</Byte>
+        <Byte>70</Byte>
+        <Byte>02</Byte>
+        <Byte>00</Byte>
+      </After>
+    </CodeEntry>
+  </CheatCodes>
+  <UserdefinedSymbols/>
+</CheatTable>

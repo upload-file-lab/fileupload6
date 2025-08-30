@@ -1,0 +1,23 @@
+{
+  "name": "encrypt-bot",
+  "version": "2.0.0",
+  "description": "ZENITSU Obf Botz",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "author": "krsna_081",
+  "license": "MIT",
+  "dependencies": {
+    "telegraf": "^4.16.3",
+    "fs-extra": "^11.2.0",
+    "js-confuser": "latest",
+    "ssh2": "^1.15.0",
+    "axios": "^1.6.8",
+    "webcrack": "^2.15.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
+
